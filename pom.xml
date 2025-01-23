@@ -6,12 +6,12 @@
 
     <groupId>com.instipod</groupId>
     <artifactId>DuoUniversalKeycloakAuthenticator</artifactId>
-    <version>1.0.11</version>
+    <version>1.0.12</version>
     <packaging>jar</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <keycloak.version>26.0.1</keycloak.version>
+        <keycloak.version>26.1.0</keycloak.version>
     </properties>
 
     <dependencies>
