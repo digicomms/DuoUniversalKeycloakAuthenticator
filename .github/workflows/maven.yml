@@ -18,6 +18,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
       packages: write
@@ -29,8 +30,24 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
     - run: mvn -B package --file pom.xml
-    - run: mkdir staging && cp target/*.jar staging
-    - uses: actions/upload-artifact@v4
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y.%m.%d.%H%M%S')"
+    - name: Create tag
+      uses: actions/github-script@v5
       with:
-        name: Package
-        path: staging
+        script: |
+          github.rest.git.createRef({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            ref: 'refs/tags/${{ steps.date.outputs.date }}',
+            sha: context.sha
+          })
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: target/DuoUniversalKeycloakAuthenticator*
+        name: DuoUniversalKeycloakAuthenticator v${{ steps.date.outputs.date }}
+        tag_name: 'refs/tags/${{ steps.date.outputs.date }}'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
