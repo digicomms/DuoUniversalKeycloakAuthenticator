@@ -50,6 +50,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
+        files: target/DuoUniversalKeycloakAuthenticator*
         tag_name: v${{ steps.git_short_hash.outputs.hash }}
         release_name: Release v${{ steps.git_short_hash.outputs.hash }}
         body: |
