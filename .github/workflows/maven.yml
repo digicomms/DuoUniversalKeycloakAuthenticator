@@ -1,19 +1,15 @@
 # This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
 
-name: DuoUniversalKeycloakAuthenticator CI with Maven
+name: DuoUniversalKeycloakAuthenticator
 
 on:
   push:
-    branches: [ "master" ]
   pull_request:
-    branches: [ "master" ]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
@@ -22,7 +18,6 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-
 
       - name: Build with Maven
         run: mvn -B package --file pom.xml
@@ -36,7 +31,10 @@ jobs:
         with:
           script: |
             github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
               ref: 'refs/tags/${{ steps.date.outputs.date }}',
+              sha: context.sha
             })
 
       - name: Release
