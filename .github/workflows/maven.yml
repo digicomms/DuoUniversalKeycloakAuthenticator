@@ -28,13 +28,13 @@ jobs:
 
     - run: mvn -B package --file pom.xml
 
-    - name: Get current date
-      id: date
-      run: echo "name=date::$(date +'%Y.%m.%d.%H%M%S')" >> $GITHUB_OUTPUT
+    #- name: Get current date
+      #id: date
+      #run: echo "name=date::$(date +'%Y.%m.%d.%H%M%S')" >> $GITHUB_OUTPUT
 
     - name: Get short commit hash
       id: git_short_hash
-      run: echo "::set-output name=hash::$(git rev-parse --short HEAD)"
+      run: echo "name=hash::$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
     # Create a new tag based on the commit SHA
     - name: Create Tag
@@ -56,4 +56,4 @@ jobs:
         body: |
           Release created automatically by GitHub Actions.
         draft: false
-        prerelease: ${{ env.prerelease }}
+        prerelease: false
